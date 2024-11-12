@@ -1,7 +1,7 @@
 
 # Its a step by step process of using SQL to clean and analyzing Data from the dataset
 ---
-# ==Data Cleaning==
+# Data Cleaning
 ---
 # 1. Insert Data
 
@@ -44,7 +44,7 @@ here, we are inserting ==Row_number()== and population with ==Over()==
 	from Copy_CTE
 	where row_num >1; 
 
-==Check A few companies if you can==
+### Check A few companies if you can
 
 
 Now to remove duplicates create a new table again. ==insert== using the syntax in the CTE
@@ -65,23 +65,23 @@ Now to remove duplicates create a new table again. ==insert== using the syntax i
 
 > make all abnormalities correct
 
-==trim==
+### trim
 
 	Update layoffs_staging2
 	set company=trim (company)
 
-==Like== use when name is same but written differently
+# Like used when name is same but written differently
 
 	update layoffs_staging2
 	set industry = 'Crypto'
 	where industry like 'crypto%';
 
-==Trailing== for exactly what you are looking for
+### Trailing for exactly what you are looking for
 
 	update layoffs_C2
 	set country= trim(trailing '.' from country)
 	where country like 'United States%';
-==STR_TO_DATE== 
+# STR_TO_DATE
 
 	update layoffs_c2
 	set `date`=STR_TO_DATE(`date`, '%m/%d/%Y');
@@ -91,13 +91,13 @@ Now to remove duplicates create a new table again. ==insert== using the syntax i
 
 # 5. Populate Data
 
-==Convert Blank to Null==
+### Convert Blank to Null
 
 	UPDATE world_layoffs.layoffs_staging2
 	SET industry = NULL
 	WHERE industry = '';
 
-==Select then update==
+### Select then update
 
 	UPDATE layoffs_staging2 t1
 	JOIN layoffs_staging2 t2
@@ -112,16 +112,16 @@ Now to remove duplicates create a new table again. ==insert== using the syntax i
 	Drop column Row_Num;
 
 ---
-# ==Exploratory Data Analysis==
+# Exploratory Data Analysis
 ---
 # Companies with most laid off
-==same can be done with other columns==
+### same can be done with other columns
 
 	select company, sum(total_laid_off)
 	FROM layoff.layoffs_c2
 	group by company
 	order by 2 desc;
-==By year==
+### By year
 
 	select Year(`date`), sum(total_laid_off)
 	FROM layoff.layoffs_c2
@@ -142,8 +142,7 @@ Now to remove duplicates create a new table again. ==insert== using the syntax i
 		total_laid_off, SUM(total_laid_off) OVER (ORDER BY dates ASC) as rolling_total_layoffs
 	FROM Rolling_Total
 	ORDER BY dates ASC;
-==Results==
-![[Pasted image 20240731183454.png]]
+
 
 # Company Rank by Yearly Layoff
 
@@ -161,6 +160,6 @@ Now to remove duplicates create a new table again. ==insert== using the syntax i
 	from Company_Year_Rank
 	Where ranking <=5;
 
-![[Pasted image 20240802103734.png]]
+
 
 
